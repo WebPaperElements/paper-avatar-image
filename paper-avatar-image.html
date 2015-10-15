@@ -1,0 +1,296 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<!--
+Avatar image element based on Paper Elements.
+
+Example:
+
+    <paper-avatar-image></paper-avatar-image>
+
+@group Seed Elements
+@element paper-avatar-image
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="paper-avatar-image">
+
+  <template>
+    <style include="paper-material">
+      :host {
+        display: block;
+        width: 40px;
+        height: 40px;
+        /*box-sizing: border-box;*/
+        text-rendering: optimizeLegibility;
+        background-color: var(--light-primary-color);
+        
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        @apply(--paper-avatar-image);
+      }
+
+      :host
+      ,:host > iron-icon
+      ,:host > .text-icon  {
+        overflow: hidden;
+      }
+
+      :host[not-animated]
+      ,:host[not-animated='true']
+      ,:host[not-animated] > iron-icon
+      ,:host[not-animated='true'] > iron-icon {
+        transition: none;
+      }
+
+      :host:not([not-animated])
+      ,:host[not-animated='false']
+      ,:host:not([not-animated]) > iron-icon
+      ,:host[not-animated='false'] > iron-icon {
+        transition: all 0.5s ease 0s;
+        @apply(--paper-avatar-animation);
+      }
+      
+      :host[no-border]
+      ,:host[no-border='true'] {
+        border: none;
+        @apply(--paper-avatar-image-no-border);
+      }
+
+      :host:not([no-border])
+      ,:host[no-border='false'] {
+        border: 1px solid black;
+        @apply(--paper-avatar-image-with-border);
+      }
+
+      :host[mode='squared']
+      ,:host[mode='squared'] > iron-icon
+      ,:host[mode='squared'] > .text-icon {
+        border-radius: 0px;
+        @apply(--paper-avatar-image-squared);
+      }
+      
+      :host[mode='rounded']
+      ,:host[mode='rounded'] > iron-icon
+      ,:host[mode='rounded'] > .text-icon {
+        border-radius: 50% 50% 50% 50%;
+        @apply(--paper-avatar-image-rounded);
+      }
+
+      :host > iron-icon.image {
+        width: 100%;
+        height: 100%;
+          
+        @apply(--paper-avatar-image-img);
+      }
+
+      :host > iron-icon.icon {
+        width: 100%;
+        height: 100%;
+          
+        @apply(--paper-avatar-image-icon);
+      }
+
+      
+      :host > .text-icon {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 40px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: var(--paper-avatar-image-icon-text-color, --primary-text-color);
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        @apply(--paper-avatar-text-icon);
+      }
+    </style>
+    <template is="dom-if" if="[[showImage]]">
+      <iron-icon class="image" src="[[src]]"></iron-icon>
+    </template>
+    <template is="dom-if" if="[[showIcon]]">
+      <iron-icon class="icon" icon="[[icon]]"></iron-icon>
+    </template>
+    <template is="dom-if" if="[[showTextIcon]]">
+      <div class="text-icon flex">[[cptTextIcon]]</div>
+    </template>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+    is: 'paper-avatar-image',
+
+    properties: {
+      /**
+       * The URL of an image for the icon. If the src property is specified,
+       * the icon property should not be.
+       *
+       * @attribute src
+       * @type String
+       * @default ''
+       */
+      src: {
+        type: String,
+        value: null
+      },
+
+      /**
+       * Specifies the icon name or index in the set of icons available in
+       * the icon's icon set. If the icon property is specified,
+       * the src property should not be.
+       *
+       * @attribute icon
+       * @type String
+       * @default ''
+       */
+      icon: {
+        type: String,
+        value: ''
+      },
+            
+      /**
+       * Text to be used to generate an icon based on first letter of each word of this one.
+       *
+       * @attribute textIcon
+       * @type String
+       * @default null
+       */
+      textIcon: {
+        type: String,
+        value: null,
+        reflectToAttribute: true,
+      },
+
+      /**
+       * Max number of chars on text icon based on first letter of each word of textIcon property.
+       *
+       * @attribute textIconMaxChars
+       * @type Number
+       * @default 1
+       */
+      textIconMaxChars: {
+        type: Number,
+        value: 1,
+        reflectToAttribute: true,
+      },
+
+       /**
+       * The mode of image presentation: squared / rounded.
+       *
+       * @attribute mode
+       * @type String
+       * @default 'rounded'
+       */
+      mode: {
+        type: String,
+        value: "rounded",
+        reflectToAttribute: true,
+      },
+
+       /**
+       * Remove the border for the avatar image.
+       *
+       * @attribute noBorder
+       * @type Boolean
+       * @default false
+       */
+      noBorder: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true,
+      },
+
+       /**
+       * Remove the animation for the avatar image mode transition.
+       *
+       * @attribute notAnimated
+       * @type Boolean
+       * @default false
+       */
+      notAnimated: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true,
+      },
+      
+      /**
+       * Text to be used to generate an icon based on first letter of each word of this one.
+       *
+       * @attribute cptTextIcon
+       * @type String
+       * @default null
+       */
+      cptTextIcon: {
+        type: String,
+        computed: '_cptTextIcon(textIcon, textIconMaxChars)',
+      },
+
+      showImage: {
+        type: Boolean,
+        computed: '_cptShowImage(src)',
+      },
+
+      showIcon: {
+        type: Boolean,
+        computed: '_cptShowIcon(src, icon)',
+      },
+
+      showTextIcon: {
+        type: Boolean,
+        computed: '_cptShowTextIcon(src, icon)',
+      },
+    },
+
+    // Element Lifecycle
+
+    ready: function() {
+    },
+
+    attached: function() {
+    },
+
+    detached: function() {
+    },
+
+    // Element Behavior
+    
+    _cptShowImage: function (src) {
+      return ((src) && (src.trim() !== ''));
+    },
+
+    _cptShowIcon: function (src, icon) {
+      return ((!this.showImage)
+              && ((icon) && (icon.trim() !== '')));
+    },
+
+    _cptShowTextIcon: function (src, icon) {
+      return ((!this.showImage)
+              && (!this.showIcon));
+    },
+
+    _cptTextIcon: function (textIcon, textIconMaxChars) {
+      return this._getInitialsFrom(textIcon, textIconMaxChars);
+    },
+    
+    _getInitialsFrom: function(value, maxChars) {
+      if (!value) {
+        return null;
+      }
+      maxChars = (maxChars === undefined) ? 1 : maxChars;
+      var returnValue = null;
+      var matches = value.match(/\b\w/g).join('');
+      if (matches.length >= maxChars) {
+        returnValue = '';
+        for(var i=0; i < maxChars; i++) {
+          returnValue += matches[i];
+        }
+      }
+      return returnValue;
+    },
+
+  });
+
+</script>

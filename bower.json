@@ -1,0 +1,30 @@
+{
+  "name": "paper-avatar-image",
+  "version": "0.10.1",
+  "authors": [
+    "Vinicius Patrinhani <patrinhani@ciandt.com>"
+  ],
+  "description": "Avatar image element based on Paper Elements.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "avatar"
+  ],
+  "main": "paper-avatar-image.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "paper-material": "PolymerElements/paper-material#^1.0.2",
+    "iron-icon": "PolymerElements/iron-icon#^1.0.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.11"
+  }
+}

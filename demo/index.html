@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>paper-avatar-image Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../paper-styles/paper-styles.html">
+    <link rel="import" href="../../paper-material/paper-material.html">
+    <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="../paper-avatar-image.html">
+    <link rel="import" href="../../iron-icons/communication-icons.html">
+    <link rel="import" href="../../paper-styles/classes/global.html">
+  </head>
+  <body unresolved>
+    <template is="dom-bind" id="app">
+      <style is="custom-style">
+        body {
+          background-color: var(--light-primary-color);
+        }
+
+        paper-material {
+          background-color: var(--primary-background-color);
+          margin: 24px;
+          padding: 16px;
+        }
+        
+        .horizontal-section {
+          min-height: 100px;
+        }
+
+        .horizontal-section > paper-avatar-image {
+          margin: 24px;
+        }
+             
+        :root {
+          --paper-avatar-image: {
+            width: 96px;
+            height: 96px;
+          };
+        }
+      </style>
+  
+      <h1>An example of <code>&lt;paper-avatar-image&gt;</code>:</h1>
+
+      <paper-material class="scroll fixed bottom">
+        <h3>Settings:</h3>
+        <div class="vertical layout">
+          <paper-toggle-button id="toggleAvatarMode" on-change="onToggleAvatarModeChange" checked>Squared Mode</paper-toggle-button>
+          <br/>
+          <paper-toggle-button id="toggleAvatarAnimated" on-change="onToggleAvatarAnimatedChange" checked>Mode Transition Animated</paper-toggle-button>
+        </div>
+      </paper-material>
+
+
+      <paper-material>
+        <h3>An basic example of <code>&lt;paper-avatar-image&gt;</code> using the elevations defined on paper-material element:</h3>
+        <div class="horizontal-section horizontal layout">
+          <paper-avatar-image src="img-1280.jpg" mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}"></paper-avatar-image>
+          <paper-avatar-image src="img-1280.jpg" mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}" elevation="1"></paper-avatar-image>
+          <paper-avatar-image src="img-1280.jpg" mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}" elevation="2"></paper-avatar-image>
+          <paper-avatar-image src="img-1280.jpg" mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}" elevation="3"></paper-avatar-image>
+          <paper-avatar-image src="img-1280.jpg" mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}" elevation="4"></paper-avatar-image>
+          <paper-avatar-image src="img-1280.jpg" mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}" elevation="5"></paper-avatar-image>
+        </div>
+      </paper-material>
+
+      <paper-material>
+        <h3>An basic example of <code>&lt;paper-avatar-image&gt;</code> binding data:</h3>
+        <div class="horizontal-section horizontal layout">
+          <template is="dom-repeat" items="{{avatarItems}}">
+            <paper-avatar-image src="[[item.src]]" icon="[[item.icon]]" text-icon="[[item.textIcon]]" text-icon-max-chars="3"  mode="{{avatarMode}}" not-animated="{{avatarNotAnimated}}" no-border></paper-avatar-image>
+          </template>
+        </div>
+      </paper-material>
+      
+      <paper-material>
+        <h3>An basic example of <code>&lt;paper-avatar-image&gt;</code> using a single url image:</h3>
+        <div class="horizontal-section horizontal layout">
+          <paper-avatar-image src="img-1280.jpg"></paper-avatar-image>
+        </div>
+      </paper-material>
+
+      <paper-material>
+        <h3>An basic example of <code>&lt;paper-avatar-image&gt;</code> using a single icon image:</h3>
+        <div class="horizontal-section horizontal layout">
+          <paper-avatar-image icon="communication:business"></paper-avatar-image>
+          <paper-avatar-image icon="communication:business" no-border></paper-avatar-image>
+        </div>
+      </paper-material>
+
+      <paper-material>
+        <h3>An basic example of <code>&lt;paper-avatar-image&gt;</code> using a text icon:</h3>
+        <div class="horizontal-section horizontal layout">
+          <paper-avatar-image text-icon="some Big value" text-icon-max-chars="3"></paper-avatar-image>
+          <paper-avatar-image text-icon="Small one" no-border></paper-avatar-image>
+        </div>
+      </paper-material>
+
+      <script>
+        
+        window.addEventListener('WebComponentsReady', function() {
+          
+          var app = document.querySelector('#app');
+          
+          var toggleAvatarMode = document.querySelector('#toggleAvatarMode');
+          var toggleAvatarAnimated = document.querySelector('#toggleAvatarAnimated');
+          
+          app.avatarMode = 'squared';
+          app.avatarNotAnimated = false;
+          
+          app.avatarItems = [
+            {
+              src: 'img-1280.jpg',
+              icon: null,
+              textIcon: 'only image',
+            }
+            ,{
+              src: null,
+              icon: 'communication:business',
+              textIcon: 'only icon',
+            }
+            ,{
+              src: 'img-1280.jpg',
+              icon: 'communication:business',
+              textIcon: 'iamge and icon',
+            }
+            ,{
+              src: null,
+              icon: null,
+              textIcon: 'only text icon',
+            }
+          ];
+          
+          app.onToggleAvatarModeChange = function () {
+            app.avatarMode = (toggleAvatarMode.checked) ? 'squared' : 'rounded';
+          };
+
+          app.onToggleAvatarAnimatedChange = function () {
+            app.avatarNotAnimated = (!toggleAvatarAnimated.checked);
+          };
+        });
+      </script>
+    </template>
+  </body>
+</html>
