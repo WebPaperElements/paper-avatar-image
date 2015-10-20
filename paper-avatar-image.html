@@ -142,15 +142,6 @@ Example:
               height: 100%;
             }
 
-            .src-list-square .text-icon{
-              width: 100%;
-              height: 100%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              background-color: #FFF;
-            }
-
     </style>
 
     <template is="dom-if" if="[[showImage]]">
@@ -178,7 +169,7 @@ Example:
               <iron-icon class="icon" icon="{{item.icon}}"></iron-icon>
             </template>
             <template is="dom-if" if="{{item.textIcon}}">
-              <div class="text-icon flex">{{item.textIcon}}</div>
+              <iron-icon class="image" src="{{item.textIcon}}"></iron-icon>
             </template>
           </div>
         </template>
@@ -372,7 +363,7 @@ Example:
       }
 
       this.mode = 'multiple-squares';
-      srcList = this._srcListFindInitialLetter(srcList);
+      srcList = this._srcListFindInitialLetterImage(srcList);
       
       if(srcList.length > 4){     
         this.set('srcListItems', srcList.slice().splice(0, 3) );
@@ -392,13 +383,13 @@ Example:
       return true;
     },
 
-    _srcListFindInitialLetter: function(srcList){
+    _srcListFindInitialLetterImage: function(srcList){
       var $this = this;
       var result = srcList.slice();
 
       $.each(result, function(i, c){
         if(c.textIcon){
-          result[i].textIcon = $this._getInitialsFrom(c.textIcon, 1);
+          result[i].textIcon = 'http://static.smartcanvas.com/avatars/avatar_tile_' + $this._getInitialsFrom(c.textIcon, 1) + '_144.png';
         }
       });
 
