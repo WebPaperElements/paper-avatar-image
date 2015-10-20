@@ -104,7 +104,55 @@ Example:
         @apply(--layout-center-center);
         @apply(--paper-avatar-text-icon);
       }
+
+
+      /* SRC LIST */
+      :host[mode='multiple-squares']{
+        display: block !important;
+        font-size: 0 !important;
+      }
+
+        .src-list-container{
+          width: 100%;
+          height: 100%;
+        }
+
+          .src-list-square{
+            width: 36px;
+            height: 36px;
+            display: inline-block;
+            vertical-align: top;
+            font-size: 16px;
+          }
+
+          .src-list-square.only-child{
+            width: 100%;
+            height: 100%;
+          }
+
+          .src-list-square.src-list-number{
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFF;
+          }
+
+            .src-list-square iron-icon{
+              width: 100%;
+              height: 100%;
+            }
+
+            .src-list-square .text-icon{
+              width: 100%;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: #FFF;
+            }
+
     </style>
+
     <template is="dom-if" if="[[showImage]]">
       <iron-icon class="image" src="[[src]]"></iron-icon>
     </template>
@@ -114,8 +162,39 @@ Example:
     <template is="dom-if" if="[[showTextIcon]]">
       <div class="text-icon flex">[[cptTextIcon]]</div>
     </template>
-  </template>
+    
 
+
+    <template is="dom-if" if="[[showSrcList]]">
+
+      <div class="src-list-container">
+        
+        <template is="dom-repeat" items="{{srcListItems}}">
+          <div class$="{{srcListSquareClass}}">
+            <template is="dom-if" if="{{item.src}}">
+              <iron-icon class="image" src="{{item.src}}"></iron-icon>
+            </template>
+            <template is="dom-if" if="{{item.icon}}">
+              <iron-icon class="icon" icon="{{item.icon}}"></iron-icon>
+            </template>
+            <template is="dom-if" if="{{item.textIcon}}">
+              <div class="text-icon flex">{{item.textIcon}}</div>
+            </template>
+          </div>
+        </template>
+        
+        <template is="dom-if" if="[[srcListNumber]]">
+          <div class="src-list-square src-list-number">[[extraItems]]</div>
+        </template>
+
+      </div>
+
+    </template>
+
+
+
+
+  </template>
 </dom-module>
 
 <script>
@@ -165,6 +244,19 @@ Example:
       },
 
       /**
+       * List of sources
+       *
+       * @attribute srcList
+       * @type Array
+       * @default null
+       */
+      srcList: {
+        type: Array,
+        value: [],
+        reflectToAttribute: true,
+      },
+
+      /**
        * Max number of chars on text icon based on first letter of each word of textIcon property.
        *
        * @attribute textIconMaxChars
@@ -186,7 +278,7 @@ Example:
        */
       mode: {
         type: String,
-        value: "rounded",
+        value: 'rounded',
         reflectToAttribute: true,
       },
 
@@ -242,6 +334,11 @@ Example:
         type: Boolean,
         computed: '_cptShowTextIcon(src, icon)',
       },
+
+      showSrcList: {
+        type: Boolean,
+        computed: '_cptShowSrcList(srcList)',
+      }
     },
 
     // Element Lifecycle
@@ -262,14 +359,53 @@ Example:
     },
 
     _cptShowIcon: function (src, icon) {
-      return ((!this.showImage)
-              && ((icon) && (icon.trim() !== '')));
+      return ((!this.showImage) && ((icon) && (icon.trim() !== '')));
     },
 
-    _cptShowTextIcon: function (src, icon) {
-      return ((!this.showImage)
-              && (!this.showIcon));
+    _cptShowTextIcon: function () {
+      return ((!this.showImage) && (!this.showIcon));
     },
+
+    _cptShowSrcList: function (srcList) {
+      if(srcList.length === 0){
+        return false;
+      }
+
+      this.mode = 'multiple-squares';
+      srcList = this._srcListFindInitialLetter(srcList);
+      
+      if(srcList.length > 4){     
+        this.set('srcListItems', srcList.slice().splice(0, 3) );
+        this.set('srcListNumber', true);
+        this.set('extraItems', '+' + ( srcList.length - 3 ) );
+      }else{
+        this.set('srcListNumber', false);
+        this.set('srcListItems', srcList.slice() );
+      }
+
+      if(srcList.length === 1){
+        this.set('srcListSquareClass', 'src-list-square only-child');
+      }else{
+        this.set('srcListSquareClass', 'src-list-square');
+      }
+
+      return true;
+    },
+
+    _srcListFindInitialLetter: function(srcList){
+      var $this = this;
+      var result = srcList.slice();
+
+      $.each(result, function(i, c){
+        if(c.textIcon){
+          result[i].textIcon = $this._getInitialsFrom(c.textIcon, 1);
+        }
+      });
+
+      return result;
+    },
+
+
 
     _cptTextIcon: function (textIcon, textIconMaxChars) {
       return this._getInitialsFrom(textIcon, textIconMaxChars);
