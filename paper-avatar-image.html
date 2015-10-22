@@ -390,7 +390,7 @@ Example:
 
       $.each(result, function(i, c){
         if(c.textIcon){
-          result[i].textIcon = 'http://static.smartcanvas.com/avatars/avatar_tile_' + $this._getInitialsFrom(c.textIcon, 1) + '_144.png';
+          result[i].textIcon = 'http://static.smartcanvas.com/avatars/avatar_tile_' + $this._getInitialsFrom(c.textIcon.toLowerCase() , 1)+ '_144.png';
         }
       });
 
