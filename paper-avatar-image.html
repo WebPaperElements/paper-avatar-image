@@ -92,7 +92,6 @@ Example:
         @apply(--paper-avatar-image-icon);
       }
 
-      
       :host > .text-icon {
         text-align: center;
         vertical-align: middle;
@@ -105,42 +104,41 @@ Example:
         @apply(--paper-avatar-text-icon);
       }
 
-
       /* SRC LIST */
       :host[mode='multiple-squares']{
         display: block !important;
         font-size: 0 !important;
       }
 
-        .src-list-container{
-          width: 100%;
-          height: 100%;
-        }
+      .src-list-container{
+        width: 100%;
+        height: 100%;
+      }
 
-          .src-list-square{
-            width: 36px;
-            height: 36px;
-            display: inline-block;
-            vertical-align: top;
-            font-size: 16px;
-          }
+      .src-list-square{
+        width: 36px;
+        height: 36px;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 16px;
+      }
 
-          .src-list-square.only-child{
-            width: 100%;
-            height: 100%;
-          }
+      .src-list-square.only-child{
+        width: 100%;
+        height: 100%;
+      }
 
-          .src-list-square.src-list-number{
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #FFF;
-          }
+      .src-list-square.src-list-number{
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #FFF;
+      }
 
-            .src-list-square iron-icon{
-              width: 100%;
-              height: 100%;
-            }
+      .src-list-square iron-icon{
+        width: 100%;
+        height: 100%;
+      }
 
     </style>
 
@@ -153,8 +151,6 @@ Example:
     <template is="dom-if" if="[[showTextIcon]]">
       <div class="text-icon flex">[[cptTextIcon]]</div>
     </template>
-    
-
 
     <template is="dom-if" if="[[showSrcList]]">
 
@@ -181,9 +177,6 @@ Example:
       </div>
 
     </template>
-
-
-
 
   </template>
 </dom-module>
@@ -384,20 +377,18 @@ Example:
       return true;
     },
 
-    _srcListFindInitialLetterImage: function(srcList){
+    _srcListFindInitialLetterImage: function(srcList) {
       var $this = this;
       var result = srcList.slice();
 
-      $.each(result, function(i, c){
-        if(c.textIcon){
+      $.each(result, function(i, c) {
+        if (c.textIcon) {
           result[i].textIcon = 'http://static.smartcanvas.com/avatars/avatar_tile_' + $this._getInitialsFrom(c.textIcon.toLowerCase() , 1)+ '_144.png';
         }
       });
 
       return result;
     },
-
-
 
     _cptTextIcon: function (textIcon, textIconMaxChars) {
       return this._getInitialsFrom(textIcon, textIconMaxChars);
@@ -408,12 +399,14 @@ Example:
         return null;
       }
       maxChars = (maxChars === undefined) ? 1 : maxChars;
-      var returnValue = null;
-      var matches = value.match(/\b\w/g).join('');
-      if (matches.length >= maxChars) {
-        returnValue = '';
-        for(var i=0; i < maxChars; i++) {
-          returnValue += matches[i];
+      var returnValue = '';
+      var match = value.match(/\b\w/g);
+      if (match) {
+        var matches = match.join('');
+        if (matches.length >= maxChars) {
+          for (var i=0; i < maxChars; i++) {
+            returnValue += matches[i];
+          }
         }
       }
       return returnValue;
